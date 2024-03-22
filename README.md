@@ -1,5 +1,2 @@
 # nuclei-custom-templates
-## Test 2 Verify
-
-Second push
-rs test
+### Directory of nuclei web application scanning testing templates
