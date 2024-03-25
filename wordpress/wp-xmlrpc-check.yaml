@@ -1,0 +1,28 @@
+id:  wp-xmlrpc-check
+
+info:
+  name: WordPress XMLRPC Check
+  author: Caddyshack2175
+  severity: medium
+
+http:
+  - raw:
+      - |-
+        POST /xmlrpc.php HTTP/1.1
+        Host: {{Hostname}}
+        User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.6167.85 Safari/537.36
+        Connection: close
+        Content-Length: 91
+
+        <methodCall>
+        <methodName>system.listMethods</methodName>
+        <params></params>
+        </methodCall>
+    redirects: false
+    stop-at-first-match: false
+    extractors:
+      - type: regex
+        name: WordPress XMLRPC Check
+        group: 1
+        regex:
+          - '<string>(.*)</string>'

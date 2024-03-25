@@ -1,0 +1,68 @@
+id: wp-user-enum-author
+
+info:
+  name: WordPress User Enumeration via Author
+  author: Caddyshack2175
+  severity: low
+  description: |
+    The ?author= URI exposed username
+  tags: wordpress,wp,enumeration
+
+http:
+  - method: GET
+    path:
+      - "{{BaseURL}}/{{author}}"
+    redirects: false
+    stop-at-first-match: false
+    payloads:
+      author:
+        - "?author=0"
+        - "?author=1"
+        - "?author=2"
+        - "?author=3"
+        - "?author=4"
+        - "?author=5"
+        - "?author=6"
+        - "?author=7"
+        - "?author=8"
+        - "?author=9"
+        - "?author=10"
+        - "?author=11"
+        - "?author=12"
+        - "?author=13"
+        - "?author=14"
+        - "?author=15"
+        - "?author=16"
+        - "?author=17"
+        - "?author=18"
+        - "?author=19"
+        - "?author=20"
+        - "?author=21"
+        - "?author=22"
+        - "?author=23"
+        - "?author=24"
+        - "?author=25"
+        - "?author=26"
+        - "?author=27"
+        - "?author=28"
+        - "?author=29"
+        - "?author=30"
+        - "?author=31"
+        - "?author=32"
+        - "?author=33"
+        - "?author=34"
+        - "?author=35"
+        - "?author=36"
+        - "?author=37"
+        - "?author=38"
+        - "?author=39"
+        - "?author=40"
+    attack: clusterbomb # Available options: sniper, pitchfork and clusterbomb
+    threads: 60
+
+    extractors:
+      - type: regex
+        name: Username
+        group: 1
+        regex:
+          - '<body class="archive author author-(.*) author-\d+ wp-embed-responsive is-light-theme no-js hfeed">'

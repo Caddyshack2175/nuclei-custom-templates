@@ -1,0 +1,123 @@
+id:  wp-user-enum-login
+
+info:
+  name: WordPress User Enumeration via Login Page
+  author: Caddyshack2175
+  severity: low
+
+
+http:
+  - raw:
+      - |+
+        GET /wp-login.php HTTP/1.1
+        Host: {{Host}}
+        Upgrade-Insecure-Requests: 1
+        User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.6167.85 Safari/537.36
+        Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
+        Accept-Encoding: gzip, deflate, br
+        Accept-Language: en-GB,en-US;q=0.9,en;q=0.8
+        Connection: close
+    
+    matchers-condition: and
+    matchers:
+      - type: word
+        part: body
+        words:
+          - '<title>Log In '
+          - ' WordPress</title>'
+          - 'Username or Email Address'
+        condition: and
+      - type: status
+        status:
+          - 200
+      
+    extractors:
+      - type: regex
+        name: Login Page Found
+        part: body
+        group: 1
+        regex:
+          - '<title>(Log In .* WordPress)</title>'
+  
+  - raw:
+      - |+
+        POST /wp-login.php HTTP/1.1
+        Host: {{Host}}
+        Content-Length: 99
+        Cache-Control: max-age=0
+        Upgrade-Insecure-Requests: 1
+        Origin: {{BaseURL}}
+        Content-Type: application/x-www-form-urlencoded
+        User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.6167.85 Safari/537.36
+        Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
+        Referer: {{BaseURL}}/wp-login.php
+        Accept-Encoding: gzip, deflate, br
+        Accept-Language: en-GB,en-US;q=0.9,en;q=0.8
+        Cookie: wordpress_test_cookie=WP%20Cookie%20check; wp_lang=en_US
+        Connection: close
+
+        log=admin&pwd=test&wp-submit=Log+In&redirect_to=http%3A%2F%2F10.117.1.96%2Fwp-admin%2F&testcookie=1
+    
+    matchers-condition: and
+    matchers:
+      - type: word
+        part: body
+        words:
+          - '<title>Log In '
+          - ' WordPress</title>'
+          - 'Username or Email Address'
+          - '<div id="login_error">	<strong>Error:</strong> The password you entered for the username <strong>'
+        condition: and
+      - type: status
+        status:
+          - 200
+      
+    extractors:
+      - type: regex
+        name: User Enumeration Known User (Bad Password)
+        part: body
+        group: 1
+        regex:
+          - '<div id="login_error">	<strong>Error:</strong> (The password you entered for the username <strong>(.*)</strong> is incorrect.)'
+  
+  - raw:
+      - |+
+        POST /wp-login.php HTTP/1.1
+        Host: {{Host}}
+        Content-Length: 99
+        Cache-Control: max-age=0
+        Upgrade-Insecure-Requests: 1
+        Origin: {{BaseURL}}
+        Content-Type: application/x-www-form-urlencoded
+        User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.6167.85 Safari/537.36
+        Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
+        Referer: {{BaseURL}}/wp-login.php
+        Accept-Encoding: gzip, deflate, br
+        Accept-Language: en-GB,en-US;q=0.9,en;q=0.8
+        Cookie: wordpress_test_cookie=WP%20Cookie%20check; wp_lang=en_US
+        Connection: close
+
+        log=randomu345763537&pwd=test&wp-submit=Log+In&redirect_to=http%3A%2F%2F10.117.1.96%2Fwp-admin%2F&testcookie=1
+    
+    matchers-condition: and
+    matchers:
+      - type: word
+        part: body
+        words:
+          - '<title>Log In '
+          - ' WordPress</title>'
+          - 'Username or Email Address'
+          - '<div id="login_error">	<strong>Error:</strong> The username <strong>'
+          - '</strong> is not registered on this site. If you are unsure of your username, try your email address instead.<br />'
+        condition: and
+      - type: status
+        status:
+          - 200
+
+    extractors:
+      - type: regex
+        name: User Enumeration Unknown User (Bad Account)
+        part: body
+        group: 1
+        regex:
+          - '(The username <strong>(.*)</strong> is not registered on this site.)'
