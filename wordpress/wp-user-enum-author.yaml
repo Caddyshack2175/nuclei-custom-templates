@@ -57,7 +57,7 @@ http:
         - "?author=38"
         - "?author=39"
         - "?author=40"
-    attack: clusterbomb # Available options: sniper, pitchfork and clusterbomb
+    attack: clusterbomb
     threads: 60
 
     extractors:

@@ -59,7 +59,7 @@ http:
         - 654321
         - loveyou
         - adminadmin123
-    attack: clusterbomb # Available options: sniper, pitchfork and clusterbomb
+    attack: clusterbomb
     threads: 60
     redirects: false
     stop-at-first-match: false
