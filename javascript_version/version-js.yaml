@@ -43,7 +43,7 @@ http:
         name: jQuery
         group: 1
         regex:
-          - '\/\*\!\s(.+)\s\|\s\(c\)'
+          - '(jQuery v(.+))'
   # Datepicker for Bootstrap
   - method: GET
     path:
