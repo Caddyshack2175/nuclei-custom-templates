@@ -14,7 +14,7 @@ http:
     stop-at-first-match: true
     extractors:
       - type: regex
-        name: WordPress Version
+        name: WordPress Version (meta tag)
         group: 1
         regex:
-          - '<meta name="generator" content="WordPress (.*)" />'
+          - '<meta name="generator" content="(WordPress (.*))" />'

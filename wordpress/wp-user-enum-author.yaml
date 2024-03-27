@@ -65,4 +65,4 @@ http:
         name: Username
         group: 1
         regex:
-          - '<body class="archive author author-(.*) author-\d+ wp-embed-responsive is-light-theme no-js hfeed">'
+          - 'author-(.*) author-\d+'
