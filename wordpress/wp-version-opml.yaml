@@ -1,0 +1,34 @@
+id:  wp-version-opml
+
+info:
+  name: WordPress Version (wp-links-opml.php)
+  author: Caddyshack2175
+  severity: info
+
+
+http:
+  - method: GET
+    path:
+      - '{{BaseURL}}/wp-links-opml.php'
+    redirects: false
+    stop-at-first-match: true
+    matchers-condition: and
+    matchers:
+      - type: regex
+        part: body
+        condition: and
+        regex:
+          - '<opml version="1.0">'
+      - type: status
+        status:
+          - 200
+
+  - method: GET
+    path:
+      - '{{BaseURL}}/wp-links-opml.php'
+    extractors:
+      - type: regex
+        name: wp-version
+        group: 1
+        regex:
+          - 'generator="(.*)"'

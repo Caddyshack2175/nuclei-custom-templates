@@ -1,0 +1,26 @@
+id:  wp-activate-register-redirect
+
+info:
+  name: WordPress Activate Redirect to Register (wp-activate.php)
+  author: Caddyshack2175
+  severity: info
+
+
+http:
+  - method: GET
+    path:
+      - '{{BaseURL}}/wp-activate.php'
+    redirects: false
+    stop-at-first-match: true
+    matchers-condition: and
+    matchers:
+      - type: regex
+        part: header
+        condition: and
+        regex:
+          - 'X-Redirect-By: WordPress'
+          - 'Location: '
+          - 'register'
+      - type: status
+        status:
+          - 302

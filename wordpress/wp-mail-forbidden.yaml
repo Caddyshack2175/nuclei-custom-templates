@@ -1,0 +1,26 @@
+id:  wp-mail-forbidden
+
+info:
+  name: WordPress Mail Forbidden (wp-mail.php)
+  author: Caddyshack2175
+  severity: info
+
+
+http:
+  - method: GET
+    path:
+      - '{{BaseURL}}/wp-mail.php'
+    redirects: false
+    stop-at-first-match: true
+    matchers-condition: and
+    matchers:
+      - type: regex
+        part: body
+        condition: and
+        regex:
+          - 'This action has been disabled by the administrator.'
+          - 'wp-die-message'
+          - 'error-page'
+      - type: status
+        status:
+          - 403
