@@ -1,12 +1,20 @@
 id: wp-user-enum-author
 
 info:
-  name: WordPress User Enumeration via Author
+  name: WordPress User Enumeration via Author URI
   author: Caddyshack2175
-  severity: low
-  description: |
-    The ?author= URI exposed username
-  tags: wordpress,wp,enumeration
+  severity: medium
+  description: | 
+    WordPress installations, if improperly secured, can allow an attacker to enumerate all the WordPress usernames iterating through the author archives. Whenever a post is published, the username or alias is shown as the author. 
+    For example the URL http://site.com/?author=1 will show all the posts from user id 1.
+    Attackers abuse this functionality with the WordPress framework to enumerate which usernames are available on the site.
+  reference:
+    - https://security.stackexchange.com/questions/66272/wordpress-brute-force-attacker-knows-real-admin-username
+    - https://perishablepress.com/stop-user-enumeration-wordpress/
+  classification:
+    cvss-metrics: CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N
+    cvss-score: 5.3
+  tags: information, discloser, wordpress, enum, enumeration, users, brute-force
 
 http:
   - method: GET
@@ -57,6 +65,15 @@ http:
         - "?author=38"
         - "?author=39"
         - "?author=40"
+        - "?author=41"
+        - "?author=42"
+        - "?author=43"
+        - "?author=44"
+        - "?author=45"
+        - "?author=46"
+        - "?author=47"
+        - "?author=48"
+        - "?author=49"
     attack: clusterbomb
     threads: 60
 

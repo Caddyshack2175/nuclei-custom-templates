@@ -1,10 +1,16 @@
 id:  wp-version
 
 info:
-  name: WordPress User Enumeration via Login Page
+  name: WordPress Version via Meta Tag Generator
   author: Caddyshack2175
   severity: info
-
+  description: The install.php file is used when first installing WordPress. It contains the form where you enter your blog title, create a username & password, etc. This file is not needed after the initial install, and should be deleted.
+  reference:
+    - 
+  classification:
+    cvss-metrics: CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:N
+    cvss-score: 0.0
+  tags: information, discloser, wordpress, default-files
 
 http:
   - method: GET
