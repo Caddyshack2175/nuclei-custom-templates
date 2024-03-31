@@ -42,4 +42,4 @@ http:
         name: wp-version
         group: 1
         regex:
-          - '\?ver=(.*)(.+\s\w+\=(.+))'
+          - 'ver\=(.+?).\s\w+'

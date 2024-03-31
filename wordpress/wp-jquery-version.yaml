@@ -17,6 +17,7 @@ http:
     path:
       - '{{BaseURL}}/wp-includes/js/jquery/jquery-migrate.min.js'
       - '{{BaseURL}}/wp-includes/js/jquery/jquery.min.js'
+      - '{{BaseURL}}/wp-includes/js/jquery/jquery.js'
     redirects: false
     stop-at-first-match: true
     extractors:
