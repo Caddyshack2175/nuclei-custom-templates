@@ -87,6 +87,6 @@ http:
       - type: regex
         name: Username
         part: header
-        group: 1
+        group: 2
         regex:
           - 'Location\:\s(.*)\/index\.php\/author\/(.*)\/'
