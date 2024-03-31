@@ -89,4 +89,4 @@ http:
         part: header
         group: 1
         regex:
-          - 'Location: http://10.117.1.59/index.php/author/(.*)/'
+          - 'Location: http://{{BaseURL}}/index.php/author/(.*)/'
