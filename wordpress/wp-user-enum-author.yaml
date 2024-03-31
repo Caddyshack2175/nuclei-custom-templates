@@ -89,4 +89,4 @@ http:
         part: header
         group: 1
         regex:
-          - 'Location\:\shttp\:\/\/(.*)\/index\.php\/author\/(.*)\/'
+          - 'Location\:\s(.*)\/index\.php\/author\/(.*)\/'
