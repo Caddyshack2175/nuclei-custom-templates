@@ -21,6 +21,28 @@ http:
     extractors:
       - type: regex
         name: WordPress-Version(meta tag)
-        group: 1
+        group: 2
         regex:
           - '<meta name="generator" content="(WordPress (.*))" />'
+  - method: GET
+    path:
+      - '{{BaseURL}}/?feed=rss2'
+    redirects: false
+    stop-at-first-match: true
+    extractors:
+      - type: regex
+        name: WordPress-Version(rss2)
+        group: 2
+        regex:
+          - '<generator>(.*/?v=(.*))</generator>'
+  - method: GET
+    path:
+      - '{{BaseURL}}?feed=comments-rss2'
+    redirects: false
+    stop-at-first-match: true
+    extractors:
+      - type: regex
+        name: WordPress-Version(rss2-comments)
+        group: 2
+        regex:
+          - '<generator>(.*/?v=(.*))</generator>'
