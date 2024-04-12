@@ -1,0 +1,17 @@
+id: ssl-cert-expiry
+
+info:
+  name: Detect SSL Certificate Issuer
+  author: Lingtren
+  severity: info
+  tags: ssl,tls
+  metadata:
+    max-request: 1
+
+ssl:
+  - address: "{{Host}}:{{Port}}"
+
+    extractors:
+      - type: json
+        json:
+          - ".*"
