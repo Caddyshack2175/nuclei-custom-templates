@@ -46,7 +46,30 @@ http:
         - sysadmin
         - test
         - wordpress
-      password: SecLists/Passwords/500-worst-passwords.txt
+      password:
+        - admin
+        - 123456
+        - password
+        - 12345678
+        - 666666
+        - 111111
+        - 1234567
+        - qwerty
+        - siteadmin
+        - administrator
+        - root
+        - 123123
+        - 123321
+        - 1234567890
+        - letmein123
+        - test123
+        - demo123
+        - pass123
+        - 123qwe
+        - qwe123
+        - 654321
+        - loveyou
+        - adminadmin123
     attack: clusterbomb
     threads: 60
     redirects: false
