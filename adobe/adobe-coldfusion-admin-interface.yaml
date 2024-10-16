@@ -18,7 +18,7 @@ http:
     matchers:
       - type: regex
         part: body
-        condition: or
+        condition: and
         regex:
           - 'ColdFusion Administrator Login'
           - 'name="loginform" action="/CFIDE/administrator/enter.cfm"'
